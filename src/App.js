@@ -16,7 +16,7 @@ function App() {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState([]);
+  const [showModal, setShowModal] = useState("");
   const [error, setError] = useState(null)
 
 
@@ -56,7 +56,7 @@ function App() {
   const openModal = (e) => {
     e.preventDefault();
     if (e.target.nodeName === "IMG") {
-      setShowModal(e.target.dataset.image);
+      setShowModal(e.target.dataset.image)
     }
   };
 
