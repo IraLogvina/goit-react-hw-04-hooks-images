@@ -16,12 +16,12 @@ function App() {
   const [images, setImages] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState([]);
   const [error, setError] = useState(null)
 
 
   useEffect(() => {
-    if (query === '') {
+    if (!query) {
       return;
     }
     const options = {
@@ -56,7 +56,7 @@ function App() {
   const openModal = (e) => {
     e.preventDefault();
     if (e.target.nodeName === "IMG") {
-      setShowModal(true);
+      setShowModal(e.target.dataset.image);
     }
   };
 
