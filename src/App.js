@@ -17,7 +17,8 @@ function App() {
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState("");
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(null);
+  const [link, setLink] = useState('')
 
 
   useEffect(() => {
@@ -57,6 +58,7 @@ function App() {
     e.preventDefault();
     if (e.target.nodeName === "IMG") {
       setShowModal(e.target.dataset.image)
+      setLink(e.target.src)
     }
   };
 
@@ -106,7 +108,7 @@ function App() {
           <ImageGallery images={images} onClick={openModal} />
           {showModal && (
             <Modal onClose={toggleModal}>
-              {/* <img src={showModal} alt="modal" /> */}
+              <img src={link} alt="modal" />
             </Modal>
           )}
           {isLoading && <Loader />}
