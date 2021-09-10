@@ -19,7 +19,7 @@ const handleSubmit = (event) => {
       return;
     }
     onSubmit(query);
-    // setQuery({ query: "" });
+    setQuery("");
   };
 
     return (
