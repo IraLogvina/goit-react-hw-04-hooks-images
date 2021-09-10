@@ -28,9 +28,7 @@ function Modal({ showModal, onClose, children }) {
 
   return createPortal(
     <div className={s.Overlay} onClick={handleBbackdropClick}>
-      <div className={s.Modal}>
-        {children}
-      </div>
+      <div className={s.Modal}>{children}</div>
     </div>,
     modalRoot
   );

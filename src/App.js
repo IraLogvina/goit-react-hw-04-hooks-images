@@ -18,8 +18,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState("");
   const [error, setError] = useState(null);
-  const [link, setLink] = useState('')
-
+  const [link, setLink] = useState("");
 
   useEffect(() => {
     if (!query) {
@@ -30,9 +29,8 @@ function App() {
       query,
     };
     setIsLoading(true);
-    ImageApi
-      .fetchImage(options)
-      .then(images => {
+    ImageApi.fetchImage(options)
+      .then((images) => {
         if (images.total === 0) {
           setError(`Nothing was found for your query ${query}`);
           setStatus("rejected");
@@ -44,21 +42,20 @@ function App() {
       .then(() => {
         window.scrollTo({
           top: document.body.scrollHeight,
-          behavior: 'smooth',
+          behavior: "smooth",
         });
       })
-      .catch(error => setError(error))
+      .catch((error) => setError(error))
       .finally(() => setIsLoading(false));
-
   }, [page, query]);
-  
+
   const toggleModal = () => setShowModal(!showModal);
 
   const openModal = (e) => {
     e.preventDefault();
     if (e.target.nodeName === "IMG") {
-      setShowModal(e.target.dataset.image)
-      setLink(e.target.src)
+      setShowModal(e.target.dataset.image);
+      setLink(e.target.src);
     }
   };
 
@@ -69,55 +66,53 @@ function App() {
   };
 
   const handleLoadMore = () => {
-  setPage(page + 1);
-};
+    setPage(page + 1);
+  };
 
+  if (status === "idle") {
+    return (
+      <>
+        <Searchbar onSubmit={handleFormSubmit} />
+        <ToastContainer autoClose={3000} />
+      </>
+    );
+  }
 
-    if (status === "idle") {
-      return (
-        <>
-          <Searchbar onSubmit={handleFormSubmit} />
-          <ToastContainer autoClose={3000} />
-        </>
-      );
-    }
+  if (status === "pending") {
+    return (
+      <>
+        <Searchbar onSubmit={handleFormSubmit} />
+        {isLoading && <Loader />}
+      </>
+    );
+  }
 
-    if (status === "pending") {
-      return (
-        <>
-          <Searchbar onSubmit={handleFormSubmit} />
-          {isLoading && <Loader />}
-        </>
-      );
-    }
+  if (status === "rejected") {
+    return (
+      <>
+        <Searchbar onSubmit={handleFormSubmit} />
+        <ErrorQuery message={error} />
+        <ToastContainer autoClose={3000} />
+      </>
+    );
+  }
 
-    if (status === "rejected") {
-      return (
-        <>
-          <Searchbar onSubmit={handleFormSubmit} />
-          <ErrorQuery message={error} />
-          <ToastContainer autoClose={3000} />
-        </>
-      );
-    }
-
-    if (status === "resolved") {
-      return (
-        <>
-          <Searchbar onSubmit={handleFormSubmit} />
-          <ImageGallery images={images} onClick={openModal} />
-          {showModal && (
-            <Modal onClose={toggleModal}>
-              <img src={link} alt="modal" />
-            </Modal>
-          )}
-          {isLoading && <Loader />}
-          <Button onClick={handleLoadMore} />
-          <ToastContainer autoClose={3000} />
-        </>
-      );
-    }
+  if (status === "resolved") {
+    return (
+      <>
+        <Searchbar onSubmit={handleFormSubmit} />
+        <ImageGallery images={images} onClick={openModal} />
+        {showModal && (
+          <Modal onClose={toggleModal}>
+            <img src={link} alt="modal" />
+          </Modal>
+        )}
+        {isLoading && <Loader />}
+        <Button onClick={handleLoadMore} />
+        <ToastContainer autoClose={3000} />
+      </>
+    );
+  }
 }
-  
 
 export default App;
